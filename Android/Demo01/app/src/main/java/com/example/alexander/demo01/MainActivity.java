@@ -7,6 +7,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
 import java.util.Random;
 import java.util.UUID;
 
@@ -15,7 +19,6 @@ public class MainActivity extends AppCompatActivity implements RVMainAdapter.RVM
     private RVMainAdapter mRVMainAdapter;
     private Button btMain;
     private final int REQUEST_CODE = 1;
-    private final int MODIFY_CODE = 2;
     private final View.OnClickListener btMainOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -105,14 +108,10 @@ public class MainActivity extends AppCompatActivity implements RVMainAdapter.RVM
 
     @Override
     public void onClickItem(Persona persona) {
-        Intent intent = new Intent();
-        intent.putExtra("firstname",
-        intent.putExtra("lastname", etApellido.getText().toString());
-        intent.putExtra("document", etDocumento.getText().toString());
-        intent.putExtra("age", etEdad.getText().toString());
+       Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+        intent.putExtra("nombre", persona.getNombre());
+        startActivityForResult(intent, 2);
 
-        setResult(RESULT_OK, intent);
-        finish();
     }
 
     @Override
@@ -127,15 +126,6 @@ public class MainActivity extends AppCompatActivity implements RVMainAdapter.RVM
                 per.setEdad(Integer.parseInt(data.getStringExtra("age")));
 
                 mRVMainAdapter.add(per);
-            }
-            else {
-                Persona per = new Persona();
-                per.setNombre(data.getStringExtra("firstname"));
-                per.setApellido(data.getStringExtra("lastname"));
-                per.setDocumento(data.getStringExtra("document"));
-                per.setEdad(Integer.parseInt(data.getStringExtra("age")));
-
-                mRVMainAdapter.update(per);
             }
         }
     }
